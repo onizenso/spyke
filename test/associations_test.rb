@@ -118,16 +118,32 @@ module Spyke
       assert_equal 1, recipe.groups.first.recipe_id
     end
 
+    def test_multiple_builds
+      recipe = Recipe.new
+      recipe.groups.build(name: 'Condiments')
+      recipe.groups.build(name: 'Tools')
+      assert_equal %w{ Condiments Tools }, recipe.groups.map(&:name)
+    end
+
     def test_new_has_many_association
       recipe = Recipe.new(id: 1)
       recipe.groups.new
       assert_equal 1, recipe.groups.first.recipe_id
     end
 
-    def test_changing_attributes_after_build_on_has_many_association
+    def test_changing_attributes_directly_after_build_on_has_many_association
       recipe = Recipe.new(id: 1)
       recipe.groups.build(name: 'Dessert')
       recipe.groups.first.name = 'Starter'
+
+      assert_equal 'Starter', recipe.groups.first.name
+      assert_equal({'recipe' => { 'groups' => [{ 'recipe_id' => 1, 'name' => 'Starter' }] } }, recipe.to_params)
+    end
+
+    def test_changing_attributes_on_reference_after_build_on_has_many_association
+      recipe = Recipe.new(id: 1)
+      group = recipe.groups.build(name: 'Dessert')
+      group.name = 'Starter'
 
       assert_equal 'Starter', recipe.groups.first.name
       assert_equal({'recipe' => { 'groups' => [{ 'recipe_id' => 1, 'name' => 'Starter' }] } }, recipe.to_params)
@@ -329,10 +345,10 @@ module Spyke
     end
 
     def test_class_methods_for_associations
-      group = Group.new
-      group.ingredients.build_salt
-      assert_equal 'Salt', group.ingredients.first.name
-      assert_equal 'Salt', Ingredient.build_salt.name
+      recipe = Recipe.new
+      recipe.groups.build_default
+      assert_equal %w{ Condiments Tools }, recipe.groups.map(&:name)
+      #assert_equal %w{ Salt Spoon }, recipe.ingredients.map(&:name)
     end
   end
 end

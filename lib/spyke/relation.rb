@@ -57,10 +57,10 @@ module Spyke
 
       # Keep hold of current scope while running a method on the class
       def scoping
-        klass.current_scope = self
+        previous, klass.current_scope = klass.current_scope, self
         yield
       ensure
-        klass.current_scope = nil
+        klass.current_scope = previous
       end
   end
 end

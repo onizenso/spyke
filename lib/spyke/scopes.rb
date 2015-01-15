@@ -6,7 +6,15 @@ module Spyke
     extend ActiveSupport::Concern
 
     module ClassMethods
-      delegate :all, :where, :build, to: :current_scope
+      delegate :where, :build, to: :all
+
+      def all
+        if current_scope
+          current_scope.clone
+        else
+          Relation.new(self, uri: uri)
+        end
+      end
 
       def scope(name, code)
         define_singleton_method name, code
@@ -17,14 +25,14 @@ module Spyke
       end
 
       def current_scope
-        ScopeRegistry.value_for(:current_scope, name) || Relation.new(self, uri: uri)
+        ScopeRegistry.value_for(:current_scope, name)
       end
     end
 
     private
 
-      def current_scope
-        self.class.current_scope
+      def query
+        self.class.all
       end
   end
 end

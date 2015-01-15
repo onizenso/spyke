@@ -47,14 +47,17 @@ end
 class Group < Spyke::Base
   has_many :ingredients, uri: nil
   accepts_nested_attributes_for :ingredients
+
+  def self.build_default
+    group_1 = build(name: 'Condiments')
+    group_1.ingredients.build(name: 'Salt')
+    group_2 = build(name: 'Tools')
+    group_2.ingredients.build(name: 'Spoon')
+  end
 end
 
 class Ingredient < Spyke::Base
   uri '/recipes/:recipe_id/ingredients/:id'
-
-  def self.build_salt
-    build(name: 'Salt')
-  end
 end
 
 class User < Spyke::Base
