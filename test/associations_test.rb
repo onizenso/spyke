@@ -125,7 +125,6 @@ module Spyke
     end
 
     def test_changing_attributes_after_build_on_has_many_association
-      skip 'wishlisted'
       recipe = Recipe.new(id: 1)
       recipe.groups.build(name: 'Dessert')
       recipe.groups.first.name = 'Starter'

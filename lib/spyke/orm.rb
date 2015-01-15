@@ -50,9 +50,9 @@ module Spyke
 
     def to_params
       if include_root?
-        { self.class.model_name.param_key => parsed_attributes }
+        { self.class.model_name.param_key => attributes.to_params.except(*uri.variables)}
       else
-        parsed_attributes
+        attributes.to_params.except(*uri.variables)
       end
     end
 
@@ -82,10 +82,5 @@ module Spyke
       self.attributes = self.class.find(id).attributes
     end
 
-    private
-
-      def parsed_attributes
-        parse attributes.except(*uri.variables)
-      end
   end
 end

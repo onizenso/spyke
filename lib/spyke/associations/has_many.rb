@@ -17,7 +17,7 @@ module Spyke
 
         collection.each do |attributes|
           if existing = find_existing_attributes(attributes.with_indifferent_access[:id])
-            existing.merge!(attributes)
+            update_parent existing.merge(attributes)
           else
             build(attributes)
           end
@@ -27,15 +27,15 @@ module Spyke
       private
 
         def find_existing_attributes(id)
-          embedded_attributes.to_a.find { |attr| attr[:id] && attr[:id].to_s == id.to_s }
+          embedded_params.to_a.find { |attr| attr[:id] && attr[:id].to_s == id.to_s }
         end
 
         def primary_keys_present?
-          embedded_attributes && embedded_attributes.any? { |attr| attr.has_key?(:id) }
+          embedded_params && embedded_params.any? { |attr| attr.has_key?(:id) }
         end
 
         def replace_existing!
-          parent.attributes[name] = []
+          update_parent []
         end
 
         def add_to_parent(record)
