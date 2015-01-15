@@ -5,19 +5,17 @@ module Spyke
     include Enumerable
 
     attr_reader :klass, :params
+    attr_writer :params
     delegate :to_ary, :[], :empty?, :last, :size, :metadata, to: :find_some
 
     def initialize(klass, options = {})
       @klass, @options, @params = klass, options, {}
     end
 
-    def all
-      where
-    end
-
     def where(conditions = {})
-      @params.merge!(conditions)
-      self
+      relation = clone
+      relation.params = params.merge(conditions)
+      relation
     end
 
     # Overrides Enumerable find

@@ -2,18 +2,14 @@ require 'spyke/relation'
 require 'spyke/scope_registry'
 
 module Spyke
-  module Scopes
+  module Scoping
     extend ActiveSupport::Concern
 
     module ClassMethods
       delegate :where, :build, to: :all
 
       def all
-        if current_scope
-          current_scope.clone
-        else
-          Relation.new(self, uri: uri)
-        end
+        current_scope || Relation.new(self, uri: uri)
       end
 
       def scope(name, code)
@@ -31,8 +27,8 @@ module Spyke
 
     private
 
-      def query
-        self.class.all
+      def scope
+        @scope ||= self.class.all
       end
   end
 end

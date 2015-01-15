@@ -21,11 +21,11 @@ module Spyke
 
     def initialize(attributes = {})
       self.attributes = attributes
-      @uri_template = query.uri
+      @uri_template = scope.uri
     end
 
     def attributes=(new_attributes)
-      @attributes ||= Attributes.new(query.params)
+      @attributes ||= Attributes.new(scope.params)
       use_setters(new_attributes) if new_attributes
     end
 

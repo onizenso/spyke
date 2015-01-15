@@ -15,8 +15,10 @@ class Recipe < Spyke::Base
 
   accepts_nested_attributes_for :image, :user, :groups
 
-  def self.page(number)
-    where(page: number)
+  def self.page(number = nil)
+    result = all
+    result = result.where(page: number) if number
+    result
   end
 
   def ingredients
@@ -70,4 +72,18 @@ end
 
 class Comment < Spyke::Base
   scope :approved, -> { where(comment_approved: true) }
+end
+
+class Search
+  def initialize(query)
+    @query = query
+  end
+
+  def recipes
+    @recipes ||= Recipe.where(query: @query)
+  end
+
+  def suggestions
+    recipes.metadata[:suggestions]
+  end
 end

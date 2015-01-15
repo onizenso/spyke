@@ -203,7 +203,7 @@ module Spyke
       assert_equal Image, recipe.background_image.class
     end
 
-    def test_cached_result
+    def test_cached_result_for_associations
       endpoint_1 = stub_request(:get, 'http://sushi.com/recipes/1/groups?per_page=3')
       endpoint_2 = stub_request(:get, 'http://sushi.com/recipes/1/groups')
 
