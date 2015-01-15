@@ -34,8 +34,7 @@ module Spyke
       private
 
         def add_to_parent(record)
-          parent.attributes[name] = record.attributes
-          record
+          parent.attributes[name] = record
         end
 
         def foreign_key

@@ -47,6 +47,8 @@ module Spyke
     private
 
       def parse(attributes)
+        # TODO: Do we need to parse when coming in?
+        attributes = attributes.attributes if attributes.respond_to?(:attributes)
         attributes.each_with_object({}) do |(key, value), parameters|
           parameters[key] = parse_value(value)
         end
