@@ -6,7 +6,7 @@ module Spyke
     extend ActiveSupport::Concern
 
     module ClassMethods
-      delegate :all, :where, to: :current_scope
+      delegate :all, :where, :build, to: :current_scope
 
       def scope(name, code)
         define_singleton_method name, code

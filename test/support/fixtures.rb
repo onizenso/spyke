@@ -51,6 +51,10 @@ end
 
 class Ingredient < Spyke::Base
   uri '/recipes/:recipe_id/ingredients/:id'
+
+  def self.build_salt
+    build(name: 'Salt')
+  end
 end
 
 class User < Spyke::Base

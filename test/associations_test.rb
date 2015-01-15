@@ -317,5 +317,12 @@ module Spyke
       assert_equal [], Group.new.ingredients.to_a
       assert_equal [1], Group.new(ingredients: [{ id: 1 }]).ingredients.map(&:id)
     end
+
+    def test_class_methods_for_associations
+      group = Group.new
+      group.ingredients.build_salt
+      assert_equal 'Salt', group.ingredients.first.name
+      assert_equal 'Salt', Ingredient.build_salt.name
+    end
   end
 end

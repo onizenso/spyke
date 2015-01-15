@@ -41,6 +41,10 @@ module Spyke
       @options[:uri]
     end
 
+    def build(*args)
+      new(*args)
+    end
+
     private
 
       def method_missing(name, *args, &block)
