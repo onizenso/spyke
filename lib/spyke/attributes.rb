@@ -11,9 +11,8 @@ module Spyke
     def parse_value(value)
       case
       when value.is_a?(Spyke::Base)         then value.attributes.to_params
-      #when value.is_a?(Hash)                then Attributes.new(value).to_params
       when value.is_a?(Array)               then value.map { |v| parse_value(v) }
-      #when value.respond_to?(:content_type) then Faraday::UploadIO.new(value.path, value.content_type)
+      when value.respond_to?(:content_type) then Faraday::UploadIO.new(value.path, value.content_type)
       else value
       end
     end
