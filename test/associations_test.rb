@@ -124,12 +124,22 @@ module Spyke
       assert_equal 1, recipe.groups.first.recipe_id
     end
 
+    def test_changing_attributes_after_build_on_has_many_association
+      skip 'wishlisted'
+      recipe = Recipe.new(id: 1)
+      recipe.groups.build(name: 'Dessert')
+      recipe.groups.first.name = 'Starter'
+
+      assert_equal 'Starter', recipe.groups.first.name
+      assert_equal({'recipe' => { 'groups' => [{ 'recipe_id' => 1, 'name' => 'Starter' }] } }, recipe.to_params)
+    end
+
     def test_deep_build_has_many_association
       recipe = Recipe.new(id: 1)
       recipe.groups.build(ingredients: [Ingredient.new(name: 'Salt')])
 
       assert_equal %w{ Salt }, recipe.ingredients.map(&:name)
-      assert_equal({ 'recipe' => { 'groups' => [{ 'recipe_id' => 1, 'ingredients' => [{ 'name' => 'Salt' }] }] } }, recipe.to_params)
+      assert_equal({'recipe' => { 'groups' => [{ 'recipe_id' => 1, 'ingredients' => [{ 'name' => 'Salt' }] }] } }, recipe.to_params)
     end
 
     def test_sequential_deep_build_has_many_association
@@ -139,7 +149,8 @@ module Spyke
       recipe.groups.first.ingredients.build(name: 'Salt')
 
       assert_equal %w{ Salt }, recipe.ingredients.map(&:name)
-      assert_equal({ 'recipe' => { 'groups' => [{ 'recipe_id' => 1, 'ingredients' => [{ 'name' => 'Salt' }] }] } }, recipe.to_params)
+      assert_equal({'recipe' => { 'groups' => [{ 'recipe_id' => 1, 'ingredients' => [{ 'name' => 'Salt' }] }] } }, recipe.to_params)
+      assert_equal({'group' => { 'recipe_id' => 1, 'ingredients' => [{ 'name' => 'Salt' }] } }, recipe.groups.first.to_params)
     end
 
     def test_deep_build_has_many_association_with_scope
