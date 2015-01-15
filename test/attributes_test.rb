@@ -104,10 +104,5 @@ module Spyke
         recipe.image(2)
       end
     end
-
-    def test_hash_like_behavior
-      recipe = Recipe.new(title: 'Pizza')
-      assert_equal 'Pizza', recipe[:title]
-    end
   end
 end

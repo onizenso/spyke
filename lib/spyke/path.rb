@@ -3,8 +3,6 @@ require 'uri_template'
 module Spyke
   class Path
     def initialize(uri_template, params = {})
-      #TODO What the huh?
-      uri_template = uri_template.to_s
       @uri_template = URITemplate.new(:colon, uri_template)
       @params = params
     end
