@@ -20,7 +20,7 @@ class Recipe < Spyke::Base
   end
 
   def ingredients
-    groups.first.ingredients
+    groups.flat_map(&:ingredients)
   end
 
   private

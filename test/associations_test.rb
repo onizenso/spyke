@@ -347,8 +347,10 @@ module Spyke
     def test_class_methods_for_associations
       recipe = Recipe.new
       recipe.groups.build_default
+
+      assert_equal({ 'recipe' => { 'groups' => [{ 'recipe_id' => nil, 'name' => 'Condiments', 'ingredients' => [{ 'group_id' => nil, 'name' => 'Salt' }] }, { 'recipe_id' => nil, 'name' => 'Tools', 'ingredients' => [{ 'group_id' => nil, 'name' => 'Spoon' }] }] } }, recipe.to_params)
       assert_equal %w{ Condiments Tools }, recipe.groups.map(&:name)
-      #assert_equal %w{ Salt Spoon }, recipe.ingredients.map(&:name)
+      assert_equal %w{ Salt Spoon }, recipe.ingredients.map(&:name)
     end
   end
 end
