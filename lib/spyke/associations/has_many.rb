@@ -40,7 +40,7 @@ module Spyke
 
         def add_to_parent(record)
           parent.attributes[name] ||= []
-          parent.attributes[name] << record.attributes
+          parent.attributes[name] << record
           record
         end
     end
